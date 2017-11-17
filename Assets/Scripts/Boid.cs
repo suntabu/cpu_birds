@@ -4,6 +4,11 @@ using UnityEngine;
 
 public class Boid
 {
+
+	/// <summary>
+	/// Sets the random position 
+	/// </summary>
+	/// <param name="width">Width.</param>
 	public void setRandomPosition (int width)
 	{
 		mPosition = Random.insideUnitSphere * width;
@@ -14,7 +19,9 @@ public class Boid
 		mVelocity = Random.insideUnitSphere * 2;
 	}
 
-	
+
+
+	// fields of boid
 	Vector3 _acceleration;
 	float _width = 500;
 	float _height = 500;
@@ -24,8 +31,10 @@ public class Boid
 	float _maxSpeed = 4;
 	float _maxSteerForce = 0.1f;
 	bool _avoidWalls = false;
-
+	Vector3 mVelocity;
 	Vector3 mPosition;
+	Vector3 mAcceleration;
+
 
 	public Vector3 position {
 		get {
@@ -34,15 +43,11 @@ public class Boid
 		 
 	}
 
-	Vector3 mVelocity;
-
 	public Vector3 velocity {
 		get {
 			return mVelocity;
 		}
 	}
-
-	Vector3 mAcceleration;
 
 	public void setGoal (Vector3 target)
 	{
