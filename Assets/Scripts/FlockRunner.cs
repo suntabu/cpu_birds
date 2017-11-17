@@ -17,14 +17,15 @@ public class FlockRunner : MonoBehaviour
 		boids = new Boid[count];
 		birds = new GameObject[count];
 
+		int width = 100;
 
 		for (var i = 0; i < count; i++) {
 			var boid = boids [i] = new Boid ();
 
-			boid.setRandomPosition ();
+			boid.setRandomPosition (width);
 			boid.setRandomVelocity ();
 			boid.setAvoidWalls (true);
-			boid.setWorldSize (500, 500, 400);
+			boid.setWorldSize (width, width, width);
 
 			var bird = birds [i] = GameObject.Instantiate (prefab);
 		}
@@ -37,6 +38,11 @@ public class FlockRunner : MonoBehaviour
 			var bird = birds [i];
 			boid.run (boids);
 			bird.transform.position = boid.position;
+			Quaternion b = Quaternion.identity;
+			b.SetLookRotation (boid.velocity);
+			Quaternion a = Quaternion.Lerp (bird.transform.localRotation, b, 1);
+			bird.transform.localRotation = a;
+//			Debug.Log (boid.velocity + "  " + bird.transform.localRotation);
 		}
 	}
 	 

@@ -4,9 +4,9 @@ using UnityEngine;
 
 public class Boid
 {
-	public void setRandomPosition ()
+	public void setRandomPosition (int width)
 	{
-		mPosition = Random.insideUnitSphere * 200;
+		mPosition = Random.insideUnitSphere * width;
 	}
 
 	public void setRandomVelocity ()
@@ -35,6 +35,13 @@ public class Boid
 	}
 
 	Vector3 mVelocity;
+
+	public Vector3 velocity {
+		get {
+			return mVelocity;
+		}
+	}
+
 	Vector3 mAcceleration;
 
 	public void setGoal (Vector3 target)
