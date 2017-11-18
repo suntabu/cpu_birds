@@ -5,6 +5,7 @@ using UnityEngine;
 public class Boid
 {
 
+
 	/// <summary>
 	/// Sets the random position 
 	/// </summary>
@@ -34,6 +35,8 @@ public class Boid
 	Vector3 mVelocity;
 	Vector3 mPosition;
 	Vector3 mAcceleration;
+	GameObject target;
+	bool isStopAfterAttacked;
 
 
 	public Vector3 position {
@@ -110,8 +113,14 @@ public class Boid
 
 	public void flock (Boid[] boids)
 	{
+		if (target != null) {
+			setGoal (target.transform.position);
+
+			_avoidWalls = false;
+		}
+
 		if (_goal != Vector3.zero) {
-			_acceleration += this.reach (_goal, 0.005f);
+			_acceleration += this.reach (_goal, 0.01f);
 		}
 
 		_acceleration += this.alignment (boids);
@@ -120,12 +129,24 @@ public class Boid
 
 	}
 
+
+
 	public void move ()
 	{
+
+
 		this.mVelocity += _acceleration;
 		var l = this.mVelocity.magnitude;
 		if (l > _maxSpeed) {
 			this.mVelocity /= l / _maxSpeed;
+		}
+
+		var d = Vector3.Distance (position, _goal);
+//		Debug.Log ("d: " + d);
+		if (isStopAfterAttacked && d <= 25) {
+			mVelocity = Vector3.zero;
+			_acceleration = Vector3.zero;
+			return;
 		}
 
 		this.mPosition += this.mVelocity;
@@ -242,6 +263,12 @@ public class Boid
 	}
 
 
+ 
 
+	public void attack (GameObject target, bool isStopAfterAttacked = false)
+	{
+		this.target = target;
+		this.isStopAfterAttacked = isStopAfterAttacked;
+	}
 
 }
